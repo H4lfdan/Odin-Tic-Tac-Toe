@@ -47,14 +47,15 @@ function GameController(
     playerTwoName = "Player Two"
 ) {
     const board = Gameboard();
+    const cell = board.getBoard();
     const players = [
         {
             name: playerOneName,
-            token: 1
+            token: "X"
         },
         {
             name: playerTwoName,
-            token: 2
+            token: "O"
         }
     ];
 
@@ -70,9 +71,42 @@ function GameController(
         console.log(`${getActivePlayer().name}'s turn.`);
     };
 
+    const checkWinner = (player) => {
+        let isWinner = false;
+        if (cell[0][0].value === player) {
+            if (cell[0][1].value === player && cell[0,2]) {
+                isWinner = true;
+            } else if (cell[1][0].value === player && cell[2,0]) {
+                isWinner = true;
+            }
+        } else if (cell[1][1].value === player) {
+            if (cell[0][0].value === player && cell[2][2].value === player) {
+                isWinner = true;
+            } else if (cell[0][1].value === player && cell[2][1].value === player) {
+                isWinner = true
+            } else if (cell[0][2].value === player && cell[2][0].value === player) {
+                isWinner = true;
+            } else if (cell[1][0].value === player && cell[1][2].value === player) {
+                isWinner = true;
+            }
+        } else if (cell[2][2].value === player) {
+            if (cell[0][2].value === player && cell[1][2].value === player) {
+                isWinner = true;
+            } else if (cell[0][0].value === player && cell[2][2].value === player) {
+                isWinner = true;
+            }
+        } 
+
+        if(isWinner = true) {
+            console.log(`${getActivePlayer().name} is the winner!`);
+        }
+    };  
+
     const playRound = (row, column) => {
         console.log(`${getActivePlayer().name} takes cell ${row} by ${column}.`);
         board.placeToken(row, column, getActivePlayer().token);
+
+        checkWinner(getActivePlayer().token);
 
         switchPlayerTurn();
         printNewRound();
