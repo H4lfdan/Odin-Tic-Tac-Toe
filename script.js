@@ -51,11 +51,11 @@ function GameController(
     const players = [
         {
             name: playerOneName,
-            token: "X"
+            token: 1
         },
         {
             name: playerTwoName,
-            token: "O"
+            token: 2
         }
     ];
 
@@ -73,32 +73,48 @@ function GameController(
 
     const checkWinner = (player) => {
         let isWinner = false;
-        if (cell[0][0].value === player) {
-            if (cell[0][1].value === player && cell[0,2]) {
+        console.log(cell[1][1].getValue());
+        if (cell[0][0].getValue() === player) {
+            if (cell[0][1].getValue() === player && cell[0][2].getValue() === player) {
+                console.log("1");
                 isWinner = true;
-            } else if (cell[1][0].value === player && cell[2,0]) {
+            } else if (cell[1][0].getValue() === player && cell[2][0].getValue() === player) {
+                console.log("2");
                 isWinner = true;
             }
-        } else if (cell[1][1].value === player) {
-            if (cell[0][0].value === player && cell[2][2].value === player) {
+        } else if (cell[1][1].getValue() === player) {
+            if (cell[0][0].getValue() === player && cell[2][2].getValue() === player) {
+                console.log("3");
                 isWinner = true;
-            } else if (cell[0][1].value === player && cell[2][1].value === player) {
+            } else if (cell[0][1].getValue() === player && cell[2][1].getValue() === player) {
+                console.log("4");
                 isWinner = true
-            } else if (cell[0][2].value === player && cell[2][0].value === player) {
+            } else if (cell[0][2].getValue() === player && cell[2][0].getValue() === player) {
+                console.log("5");
                 isWinner = true;
-            } else if (cell[1][0].value === player && cell[1][2].value === player) {
-                isWinner = true;
-            }
-        } else if (cell[2][2].value === player) {
-            if (cell[0][2].value === player && cell[1][2].value === player) {
-                isWinner = true;
-            } else if (cell[0][0].value === player && cell[2][2].value === player) {
+            } else if (cell[1][0].getValue() === player && cell[1][2].getValue() === player) {
+                console.log("6");
                 isWinner = true;
             }
-        } 
+        } else if (cell[2][2].getValue() === player) {
+            if (cell[0][2].getValue() === player && cell[1][2].getValue() === player) {
+                console.log("7");
+                isWinner = true;
+            } else if (cell[0][0].getValue() === player && cell[2][2].getValue() === player) {
+                console.log("8");
+                isWinner = true;
+            }
+        } else {
+            isWinner = false;
+        }
 
-        if(isWinner = true) {
+        console.log(isWinner);
+
+        if(isWinner === true) {
             console.log(`${getActivePlayer().name} is the winner!`);
+            // activePlayer.score ++;
+            // console.log(activePlayer.score);
+
         }
     };  
 
@@ -106,7 +122,7 @@ function GameController(
         console.log(`${getActivePlayer().name} takes cell ${row} by ${column}.`);
         board.placeToken(row, column, getActivePlayer().token);
 
-        checkWinner(getActivePlayer().token);
+        checkWinner(activePlayer.token);
 
         switchPlayerTurn();
         printNewRound();
