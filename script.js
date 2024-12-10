@@ -14,7 +14,7 @@ function Gameboard() {
 
     const placeToken = (row, column, player) => {
         const targetCell = board[row][column];
-        if(targetCell.getValue() === 0) {
+        if(targetCell.getValue() === "") {
             targetCell.addToken(player);
         } else return;
     };
@@ -24,11 +24,19 @@ function Gameboard() {
             console.log(boardWithCellValues);
     };
 
-    return { getBoard, placeToken, printBoard };
+    const clearBoard = () => {
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < columns; j++) {
+                board[i][j].addToken("");
+            }
+        }
+    }
+
+    return { getBoard, placeToken, printBoard, clearBoard };
 }
 
 function Cell() {
-    let value = 0;
+    let value = "";
 
     const addToken = (player) => {
         value = player;
@@ -42,6 +50,16 @@ function Cell() {
     };
 }
 
+function GameDisplay() {
+    const board = Gameboard();
+    const cell = board.getBoard();
+    const table = document.getElementById("display");
+
+    // const displayCell = () {
+
+    // }
+}
+
 function GameController(
     playerOneName = "Player One",
     playerTwoName = "Player Two"
@@ -51,11 +69,13 @@ function GameController(
     const players = [
         {
             name: playerOneName,
-            token: 1
+            token: "X",
+            score: 0
         },
         {
             name: playerTwoName,
-            token: 2
+            token: "O",
+            score: 0
         }
     ];
 
@@ -111,16 +131,19 @@ function GameController(
         console.log(isWinner);
 
         if(isWinner === true) {
-            console.log(`${getActivePlayer().name} is the winner!`);
-            // activePlayer.score ++;
-            // console.log(activePlayer.score);
+            console.log(`${activePlayer.name} is the winner!`);
+            activePlayer.score ++;
+            for (let i = 0; i < players.length; i++) {
+                console.log(players[i].name + ": " + players[i].score);
+            }
+            board.clearBoard();
 
         }
     };  
 
     const playRound = (row, column) => {
         console.log(`${getActivePlayer().name} takes cell ${row} by ${column}.`);
-        board.placeToken(row, column, getActivePlayer().token);
+        board.placeToken(row, column, activePlayer.token);
 
         checkWinner(activePlayer.token);
 
