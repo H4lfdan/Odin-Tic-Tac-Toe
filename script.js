@@ -16,6 +16,8 @@ function Gameboard() {
         const targetCell = board[row][column];
         if(targetCell.getValue() === "") {
             targetCell.addToken(player);
+            GameDisplay().displayToken(row, column, player)
+            console.log("display called from place token");
         } else return;
     };
     
@@ -32,10 +34,10 @@ function Gameboard() {
         }
     }
 
-    return { getBoard, placeToken, printBoard, clearBoard };
+    return { rows, columns, getBoard, placeToken, printBoard, clearBoard };
 }
 
-function Cell() {
+function Cell(row) {
     let value = "";
 
     const addToken = (player) => {
@@ -52,12 +54,26 @@ function Cell() {
 
 function GameDisplay() {
     const board = Gameboard();
-    const cell = board.getBoard();
     const table = document.getElementById("display");
 
-    // const displayCell = () {
+    const displayBoard = () => {
+        for (let i = 0; i < board.rows; i++) {
+            let row = table.insertRow();
 
-    // }
+            for (let j = 0; j < board.columns; j++) {
+                row.insertCell();
+            }
+        }
+    }
+
+    const displayToken = (row, column, player) => {
+        table.rows[row].cells[column].innerHTML = player;;
+    };
+
+    return {
+        displayBoard,
+        displayToken
+    }
 }
 
 function GameController(
@@ -160,6 +176,8 @@ function GameController(
 }
 
 const game = GameController();
+const display = GameDisplay().displayBoard();
+
 
 function testRound() {
     const row = document.getElementById("row").value;
