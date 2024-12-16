@@ -1,3 +1,5 @@
+let tableCount = 0;
+
 function Gameboard() {
     const rows = 3;
     const columns = 3;
@@ -17,7 +19,6 @@ function Gameboard() {
         if(targetCell.getValue() === "") {
             targetCell.addToken(player);
             GameDisplay().displayToken(row, column, player)
-            console.log("display called from place token");
         } else return;
     };
     
@@ -25,6 +26,22 @@ function Gameboard() {
         const boardWithCellValues = board.map((row) => row.map((cell) => cell.getValue()))
             console.log(boardWithCellValues);
     };
+
+    const displayBoard = () => {
+        tableCount++;
+        console.log("tableCount: " + tableCount);
+        let table = document.createElement("TABLE");
+        table.setAttribute("id", `table${tableCount}`);
+        document.body.appendChild(table);
+    
+        for (let i = 0; i < rows; i++) {
+            let row = table.insertRow();
+
+            for (let j = 0; j < columns; j++) {
+                row.insertCell();
+            }
+        }
+    }
 
     const clearBoard = () => {
         for (let i = 0; i < rows; i++) {
@@ -34,7 +51,7 @@ function Gameboard() {
         }
     }
 
-    return { rows, columns, getBoard, placeToken, printBoard, clearBoard };
+    return { rows, columns, getBoard, placeToken, printBoard, displayBoard, clearBoard };
 }
 
 function Cell(row) {
@@ -53,25 +70,13 @@ function Cell(row) {
 }
 
 function GameDisplay() {
-    const board = Gameboard();
-    const table = document.getElementById("display");
-
-    const displayBoard = () => {
-        for (let i = 0; i < board.rows; i++) {
-            let row = table.insertRow();
-
-            for (let j = 0; j < board.columns; j++) {
-                row.insertCell();
-            }
-        }
-    }
-
     const displayToken = (row, column, player) => {
-        table.rows[row].cells[column].innerHTML = player;;
+        console.log("tableCount: " + tableCount);
+        const table = document.getElementById(`table${tableCount}`);
+        table.rows[row].cells[column].innerHTML = player;
     };
 
     return {
-        displayBoard,
         displayToken
     }
 }
@@ -109,35 +114,40 @@ function GameController(
 
     const checkWinner = (player) => {
         let isWinner = false;
-        console.log(cell[1][1].getValue());
         if (cell[0][0].getValue() === player) {
             if (cell[0][1].getValue() === player && cell[0][2].getValue() === player) {
-                console.log("1");
+                console.log("Combo: 1");
                 isWinner = true;
+                // verified
             } else if (cell[1][0].getValue() === player && cell[2][0].getValue() === player) {
-                console.log("2");
+                console.log("Combo: 2");
                 isWinner = true;
+                // verified
             }
         } else if (cell[1][1].getValue() === player) {
             if (cell[0][0].getValue() === player && cell[2][2].getValue() === player) {
-                console.log("3");
+                console.log("Combo: 3");
                 isWinner = true;
+                // NOT WORKING!!!
             } else if (cell[0][1].getValue() === player && cell[2][1].getValue() === player) {
-                console.log("4");
+                console.log("Combo: 4");
                 isWinner = true
+                // verified
             } else if (cell[0][2].getValue() === player && cell[2][0].getValue() === player) {
-                console.log("5");
+                console.log("Combo: 5");
                 isWinner = true;
+                // verified
             } else if (cell[1][0].getValue() === player && cell[1][2].getValue() === player) {
-                console.log("6");
+                console.log("Combo: 6");
                 isWinner = true;
+                // verified
             }
         } else if (cell[2][2].getValue() === player) {
             if (cell[0][2].getValue() === player && cell[1][2].getValue() === player) {
-                console.log("7");
+                console.log("Combo: 7");
                 isWinner = true;
-            } else if (cell[0][0].getValue() === player && cell[2][2].getValue() === player) {
-                console.log("8");
+            } else if (cell[2][0].getValue() === player && cell[2][1].getValue() === player) {
+                console.log("Combo: 8");
                 isWinner = true;
             }
         } else {
@@ -153,6 +163,7 @@ function GameController(
                 console.log(players[i].name + ": " + players[i].score);
             }
             board.clearBoard();
+            board.displayBoard();
 
         }
     };  
@@ -168,6 +179,7 @@ function GameController(
     };
 
     printNewRound();
+    board.displayBoard();
 
     return {
         playRound,
@@ -176,7 +188,6 @@ function GameController(
 }
 
 const game = GameController();
-const display = GameDisplay().displayBoard();
 
 
 function testRound() {
