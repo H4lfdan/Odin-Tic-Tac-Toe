@@ -128,45 +128,37 @@ function GameController(
             if (cell[0][1].getValue() === player && cell[0][2].getValue() === player) {
                 console.log("Combo: 1");
                 isWinner = true;
-                // verified
             } else if (cell[1][0].getValue() === player && cell[2][0].getValue() === player) {
                 console.log("Combo: 2");
                 isWinner = true;
-                // verified
             }
-        } else if (cell[1][1].getValue() === player) {
+        }
+        if (cell[1][1].getValue() === player) {
             if (cell[0][0].getValue() === player && cell[2][2].getValue() === player) {
                 console.log("Combo: 3");
                 isWinner = true;
-                // NOT WORKING!!!
             } else if (cell[0][1].getValue() === player && cell[2][1].getValue() === player) {
                 console.log("Combo: 4");
-                isWinner = true
-                // verified
+                isWinner = true;
             } else if (cell[0][2].getValue() === player && cell[2][0].getValue() === player) {
                 console.log("Combo: 5");
                 isWinner = true;
-                // verified
             } else if (cell[1][0].getValue() === player && cell[1][2].getValue() === player) {
                 console.log("Combo: 6");
                 isWinner = true;
-                // verified
             }
-        } else if (cell[2][2].getValue() === player) {
+        }
+        if (cell[2][2].getValue() === player) {
             if (cell[0][2].getValue() === player && cell[1][2].getValue() === player) {
                 console.log("Combo: 7");
                 isWinner = true;
-                // verified
             } else if (cell[2][0].getValue() === player && cell[2][1].getValue() === player) {
                 console.log("Combo: 8");
                 isWinner = true;
-                // verified
             } 
-        } else {
-            isWinner = false;
         }
 
-        console.log(isWinner);
+        console.log("isWinner = " + isWinner);
 
         if(isWinner === true) {
             console.log(`${activePlayer.name} is the winner!`);
