@@ -2,7 +2,7 @@ table, th, td {
     border: 2px solid black;
 }
 
-td {
+td, button {
     width: 24px;
     height: 24px;
 }

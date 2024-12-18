@@ -38,12 +38,22 @@ function Gameboard() {
             let row = table.insertRow();
 
             for (let j = 0; j < columns; j++) {
-                row.insertCell();
+                let cell = row.insertCell();
+                cell.innerHTML = `<button onclick="game.playRound(${i}, ${j})"></button>`
             }
         }
     }
 
     const clearBoard = () => {
+        const table = document.getElementById(`table${tableCount}`);
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < columns; j++) {
+                const cell = table.rows[i].cells[j];
+                if (cell.innerHTML != "X" && cell.innerHTML != "O") {
+                    cell.innerHTML = "";
+                }
+            }
+        }
         for (let i = 0; i < rows; i++) {
             for (let j = 0; j < columns; j++) {
                 board[i][j].addToken("");
@@ -146,10 +156,12 @@ function GameController(
             if (cell[0][2].getValue() === player && cell[1][2].getValue() === player) {
                 console.log("Combo: 7");
                 isWinner = true;
+                // verified
             } else if (cell[2][0].getValue() === player && cell[2][1].getValue() === player) {
                 console.log("Combo: 8");
                 isWinner = true;
-            }
+                // verified
+            } 
         } else {
             isWinner = false;
         }
@@ -190,8 +202,8 @@ function GameController(
 const game = GameController();
 
 
-function testRound() {
-    const row = document.getElementById("row").value;
-    const column = document.getElementById("column").value;
-    game.playRound(row, column);
-}
+// function testRound() {
+//     const row = document.getElementById("row").value;
+//     const column = document.getElementById("column").value;
+//     game.playRound(row, column);
+// }
